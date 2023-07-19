@@ -9,8 +9,15 @@
         </p>
     </header>
 
+    @if (session('message'))
+    <div class="text-green-600">
+        {{ session('message') }}
+    </div>
+    @endif
 
-    <form method="post" action="/profile/avatar">
+    <form method="post" action="{{route('profile.avatar')}}" enctype="multipart/form-data">
+        @method('patch')
+        @csrf
 
         <div>
             <x-input-label for="name" value="Avatar" />
