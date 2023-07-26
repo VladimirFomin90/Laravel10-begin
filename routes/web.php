@@ -30,17 +30,18 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::patch('/profile/avatar', [AvatarController::class, 'update'])->name('profile.avatar');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::post('/profile/avatar/ai', [AvatarController::class, 'generate'])->name('profile.avatar.ai');
 });
 
 require __DIR__ . '/auth.php';
 
 Route::get('/openai', function () {
 
-    $result = OpenAI::images()->create([
-        "prompt" => "create an avatar according to the name" . auth()->user()->name,
-        "n" => 1,
-        "size" => "256x256"
-    ]);
+    // $result = OpenAI::images()->create([
+    //     "prompt" => "create an avatar according to the name" . auth()->user()->name,
+    //     "n" => 1,
+    //     "size" => "256x256"
+    // ]);
 
-    return response(['url' => $result->data[0]->url]);
+    // return response(['url' => $result->data[0]->url]);
 });

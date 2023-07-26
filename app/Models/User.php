@@ -46,12 +46,9 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-    protected function password(): Attribute
+    protected function password($password)
     {
-
-        return Attribute::make(
-            set: fn($value) => bcrypt($value)
-        );
+        $this->attributes['password'] = bcrypt($password);
     }
 
 }

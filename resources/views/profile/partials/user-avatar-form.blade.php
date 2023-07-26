@@ -4,12 +4,22 @@
             User Avatar
         </h2>
 
-        <img width="90" height="90" class="rounded-full" src="{{ "/storage/$user->avatar" }}" alt="user avatar" />
-
-        <p class="mt-1 text-sm text-gray-600">
-            Add user avatar
-        </p>
     </header>
+
+    <img width="90" height="90" class="rounded-full" src="{{ "/storage/$user->avatar" }}" alt="user avatar" />
+
+    <form method="post" action="{{ route('profile.avatar.ai')}}" class="mt-4">
+        @csrf
+        <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
+            AI Avatar
+        </p>
+        <x-primary-button>Generate Avatar</x-primary-button>
+    </form>
+
+    <p class="my-3 text-sm text-gray-600 dark:text-gray-400">
+        Or
+    </p>
+
 
     @if (session('message'))
     <div class="text-green-600">
@@ -22,7 +32,7 @@
         @csrf
 
         <div>
-            <x-input-label for="name" value="Avatar" />
+            <x-input-label for="name" value="Upload Avatar locally" />
             <x-text-input id="avatar" name="avatar" type="file" class="mt-1 block w-full" :value="old('avatar', $user->avatar)" required autofocus autocomplete="avatar" />
             <x-input-error class="mt-2" :messages="$errors->get('avatar')" />
         </div>
