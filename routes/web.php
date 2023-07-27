@@ -3,7 +3,9 @@
 use App\Http\Controllers\Profile\AvatarController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
-use OpenAI\Laravel\Facades\OpenAI;
+use Laravel\Socialite\Facades\Socialite;
+use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 
 /*
 |--------------------------------------------------------------------------
@@ -35,13 +37,22 @@ Route::middleware('auth')->group(function () {
 
 require __DIR__ . '/auth.php';
 
-Route::get('/openai', function () {
+Route::post('/auth/redirect', function () {
+    return Socialite::driver('github')->redirect();
+})->name('login.github');
 
-    // $result = OpenAI::images()->create([
-    //     "prompt" => "create an avatar according to the name" . auth()->user()->name,
-    //     "n" => 1,
-    //     "size" => "256x256"
-    // ]);
+Route::get('/auth/callback', function () {
 
-    // return response(['url' => $result->data[0]->url]);
+    $user = Socialite::driver('github')->user();
+    $user = User::firstOrCreate(['email' => $user->email], [
+        'name' => $user->name,
+        'password' => 'password'
+    ]);
+
+    Auth::login($user);
+
+    return redirect('/dashboard');
+
+
+    // $user->token
 });
